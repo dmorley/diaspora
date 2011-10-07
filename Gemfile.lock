@@ -533,12 +533,8 @@ DEPENDENCIES
   rspec-rails (>= 2.0.0)
   ruby-debug
   ruby-debug19
-<<<<<<< HEAD
-  sass (= 3.1.7)
-=======
   ruby-oembed
-  sass (= 3.1.4)
->>>>>>> d9aa896b43b6baca69ee699eeefb97d125b27934
+  sass (= 3.1.7)
   selenium-webdriver (~> 2.7.0)
   settingslogic (= 2.0.6)
   sod!

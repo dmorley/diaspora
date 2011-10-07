@@ -10,11 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-<<<<<<< HEAD
 ActiveRecord::Schema.define(:version => 20111003232053) do
-=======
-ActiveRecord::Schema.define(:version => 20110911213207) do
->>>>>>> d9aa896b43b6baca69ee699eeefb97d125b27934
 
   create_table "aspect_memberships", :force => true do |t|
     t.integer  "aspect_id",  :null => false
@@ -182,6 +178,13 @@ ActiveRecord::Schema.define(:version => 20110911213207) do
   add_index "notifications", ["target_id"], :name => "index_notifications_on_target_id"
   add_index "notifications", ["target_type", "target_id"], :name => "index_notifications_on_target_type_and_target_id"
 
+  create_table "o_embed_caches", :force => true do |t|
+    t.string "url",  :limit => 1024, :null => false
+    t.text   "data",                 :null => false
+  end
+
+  add_index "o_embed_caches", ["url"], :name => "index_o_embed_caches_on_url", :length => {"url"=>255}
+
   create_table "oauth_access_tokens", :force => true do |t|
     t.integer  "authorization_id",               :null => false
     t.string   "access_token",     :limit => 32, :null => false
@@ -282,7 +285,7 @@ ActiveRecord::Schema.define(:version => 20110911213207) do
     t.integer  "image_width"
     t.string   "provider_display_name"
     t.string   "actor_url"
-    t.integer  "objectId"
+    t.string   "objectId"
     t.string   "root_guid",             :limit => 30
     t.string   "status_message_guid"
     t.integer  "likes_count",                         :default => 0
@@ -292,6 +295,7 @@ ActiveRecord::Schema.define(:version => 20110911213207) do
   add_index "posts", ["author_id", "root_guid"], :name => "index_posts_on_author_id_and_root_guid", :unique => true
   add_index "posts", ["author_id"], :name => "index_posts_on_person_id"
   add_index "posts", ["guid"], :name => "index_posts_on_guid", :unique => true
+  add_index "posts", ["root_guid"], :name => "index_posts_on_root_guid"
   add_index "posts", ["status_message_guid", "pending"], :name => "index_posts_on_status_message_guid_and_pending"
   add_index "posts", ["status_message_guid"], :name => "index_posts_on_status_message_guid"
   add_index "posts", ["type", "pending", "id"], :name => "index_posts_on_type_and_pending_and_id"
@@ -336,9 +340,9 @@ ActiveRecord::Schema.define(:version => 20110911213207) do
   add_index "service_users", ["uid", "service_id"], :name => "index_service_users_on_uid_and_service_id", :unique => true
 
   create_table "services", :force => true do |t|
-    t.string   "type",          :null => false
-    t.integer  "user_id",       :null => false
-    t.string   "uid"
+    t.string   "type",          :limit => 127, :null => false
+    t.integer  "user_id",                      :null => false
+    t.string   "uid",           :limit => 127
     t.string   "access_token"
     t.string   "access_secret"
     t.string   "nickname"
