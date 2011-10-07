@@ -8,7 +8,7 @@ module Diaspora
       include ActionView::Helpers::TagHelper
 
       def autolink(link, type)
-        auto_link(link, :link => :urls)
+        auto_link(link, :link => :urls, :html => { :target => "_blank" })
       end
     end
 
@@ -42,7 +42,7 @@ module Diaspora
         cache = OEmbedCache.find_by_url(url)
         if not cache.nil? and cache.data.has_key?('type')
           case cache.data['type']
-            when 'video', 'rich'
+          when 'video', 'rich'
               if secure_endpoints.include?(cache.data['trusted_endpoint_url']) and cache.data.has_key?('html')
                 rep = raw(cache.data['html'])
               elsif cache.data.has_key?('thumbnail_url')
@@ -54,7 +54,7 @@ module Diaspora
                               url, :target => '_blank')
               end
 
-            when 'photo'
+          when 'photo'
               if cache.data.has_key?('url')
                 img_options = {}
                 img_options.merge!({:height => cache.data['height'],
@@ -63,6 +63,8 @@ module Diaspora
                 rep = link_to(image_tag(cache.data['url'], img_options),
                               url, :target => '_blank')
             end
+          else
+            puts "mega derp"
           end
 
           title = cache.data['title'] \
